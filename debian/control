@@ -1,0 +1,59 @@
+Source: zziplib
+Section: libs
+Priority: optional
+Maintainer: Scott Howard <showard@debian.org>
+Uploaders: Lukas Märdian <luk@slyon.de>
+Build-Depends:
+ debhelper-compat (= 13),
+ pkg-config,
+ zlib1g-dev,
+ python3:native,
+ zip,
+ dh-exec,
+ cmake,
+Standards-Version: 4.5.1
+Homepage: https://github.com/gdraheim
+Vcs-Browser: https://salsa.debian.org/slyon/zzip
+Vcs-git: https://salsa.debian.org/slyon/zzip.git
+
+Package: zziplib-bin
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: library providing read access on ZIP-archives - binaries
+ The zziplib library is intentionally lightweight, it offers the ability
+ to easily extract data from files archived in a single zip file.
+ Applications can bundle files into a single zip archive and access them.
+ The implementation is based only on the (free) subset of compression
+ with the zlib algorithm which is actually used by the zip/unzip tools.
+ .
+ This package contains some useful binaries to extract data from zip
+ archives.
+
+Package: libzzip-0-13
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: library providing read access on ZIP-archives - library
+ The zziplib library is intentionally lightweight, it offers the ability
+ to easily extract data from files archived in a single zip file.
+ Applications can bundle files into a single zip archive and access them.
+ The implementation is based only on the (free) subset of compression
+ with the zlib algorithm which is actually used by the zip/unzip tools.
+ .
+ This package contains the zziplib runtime library.
+
+Package: libzzip-dev
+Section: libdevel
+Architecture: any
+Depends: libzzip-0-13 (= ${binary:Version}), ${misc:Depends}
+Description: library providing read access on ZIP-archives - development
+ The zziplib library is intentionally lightweight, it offers the ability
+ to easily extract data from files archived in a single zip file.
+ Applications can bundle files into a single zip archive and access them.
+ The implementation is based only on the (free) subset of compression
+ with the zlib algorithm which is actually used by the zip/unzip tools.
+ .
+ This package contains the header files and static library needed to
+ compile applications that use zziplib.

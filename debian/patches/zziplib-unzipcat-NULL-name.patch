@@ -1,0 +1,46 @@
+--- a/bins/unzzipshow.c
++++ b/bins/unzzipshow.c
+@@ -72,8 +72,11 @@ main (int argc, char ** argv)
+ 	for (; entry ; entry = zzip_entry_findnext(entry))
+ 	{
+ 	    char* name = zzip_entry_strdup_name (entry);
+-	    printf ("%s\n", name);
+-	    free (name);
++	    if (name)
++	    {
++	        printf ("%s\n", name);
++	        free (name);
++	    }
+ 	}
+ 	return 0;
+     }
+@@ -93,10 +96,13 @@ main (int argc, char ** argv)
+ 	for (; entry ; entry = zzip_entry_findnext(entry))
+ 	{
+ 	    char* name = zzip_entry_strdup_name (entry);
+-	    if (! _zzip_fnmatch (argv[argn], name, 
+-		  _zzip_FNM_NOESCAPE|_zzip_FNM_PATHNAME|_zzip_FNM_PERIOD))
+-		zzip_cat_file (disk, name, stdout);
+-	    free (name);
++	    if (name)
++	    {
++	        if (! _zzip_fnmatch (argv[argn], name,
++		      _zzip_FNM_NOESCAPE|_zzip_FNM_PATHNAME|_zzip_FNM_PERIOD))
++		    zzip_cat_file (disk, name, stdout);
++	        free (name);
++	    }
+ 	}
+     }
+     return 0;
+--- a/zzip/fseeko.c
++++ b/zzip/fseeko.c
+@@ -389,7 +389,8 @@ zzip_entry_findfirst(FILE * disk)
+                     debug1("found zip64 disk locator (not supported)");
+                     /* seek = zzip_disk64_locator_rootseek(locator); */
+                 }
+-            } else if (zzip_disk64_trailer_check_magic(p))
++            } else if ((p + sizeof(struct zzip_disk64_trailer)) <= (buffer + mapsize)
++                   && zzip_disk64_trailer_check_magic(p))
+             {
+                 struct zzip_disk64_trailer *trailer =
+                     (struct zzip_disk64_trailer *) p;
